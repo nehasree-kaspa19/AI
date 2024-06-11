@@ -1,0 +1,52 @@
+import itertools
+
+# Function to convert a word to a number based on a given digit mapping
+def word_to_number(word, mapping):
+    number = 0
+    for letter in word:
+        number = number * 10 + mapping[letter]
+    return number
+
+# Cryptarithmetic puzzle solver
+def solve_cryptarithmetic():
+    # Words in the puzzle
+    words = ["SEND", "MORE", "MONEY"]
+
+    # Unique letters in the puzzle
+    unique_letters = set(''.join(words))
+
+    # Ensure we have 10 unique letters (since there are 10 digits)
+    if len(unique_letters) > 10:
+        print("Too many unique letters.")
+        return
+
+    # Create a list of letters
+    letters = list(unique_letters)
+
+    # Digits to be used in the permutations (0 to 9)
+    digits = range(10)
+
+    # Generate all possible digit mappings
+    for perm in itertools.permutations(digits, len(letters)):
+        mapping = dict(zip(letters, perm))
+
+        # Skip mappings that lead to numbers with leading zeroes
+        if any(mapping[word[0]] == 0 for word in words):
+            continue
+
+        # Calculate the numerical values of the words based on the current mapping
+        send = word_to_number("SEND", mapping)
+        more = word_to_number("MORE", mapping)
+        money = word_to_number("MONEY", mapping)
+
+        # Check if the current mapping solves the puzzle
+        if send + more == money:
+            print(f"SEND = {send}, MORE = {more}, MONEY = {money}")
+            print(f"Mapping: {mapping}")
+            return
+
+    print("No solution found.")
+
+# Run the solver
+solve_cryptarithmetic()
+0 comments on commit d815ef5

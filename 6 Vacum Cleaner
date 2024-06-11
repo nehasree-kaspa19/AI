@@ -1,0 +1,66 @@
+from collections import deque
+
+class VacuumCleaner:
+    def _init_(self, grid, start):
+        self.grid = grid
+        self.start = start
+        self.rows = len(grid)
+        self.cols = len(grid[0])
+        self.visited = set()
+        self.clean_steps = []
+
+    def is_dirty(self, pos):
+        x, y = pos
+        return self.grid[x][y] == 1
+
+    def clean(self, pos):
+        x, y = pos
+        self.grid[x][y] = 0
+        self.clean_steps.append(("Clean", pos))
+
+    def get_neighbors(self, pos):
+        x, y = pos
+        neighbors = []
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < self.rows and 0 <= ny < self.cols:
+                neighbors.append((nx, ny))
+        return neighbors
+
+    def bfs(self):
+        queue = deque([(self.start, [])])
+        self.visited.add(self.start)
+
+        while queue:
+            current_pos, path = queue.popleft()
+            if self.is_dirty(current_pos):
+                self.clean(current_pos)
+
+            for neighbor in self.get_neighbors(current_pos):
+                if neighbor not in self.visited:
+                    self.visited.add(neighbor)
+                    queue.append((neighbor, path + [current_pos]))
+                    self.clean_steps.append(("Move", neighbor))
+
+    def run(self):
+        self.bfs()
+        return self.clean_steps
+
+# Example usage
+grid = [
+    [0, 1, 0],
+    [1, 0, 1],
+    [0, 1, 0]
+]
+start_pos = (1, 1)
+
+vacuum = VacuumCleaner(grid, start_pos)
+steps = vacuum.run()
+
+print("Cleaning steps:")
+for step in steps:
+    print(step)
+
+print("Final grid state:")
+for row in grid:
+    print(row)

@@ -1,0 +1,44 @@
+% Define students
+student(john).
+student(mary).
+student(alex).
+student(sarah).
+
+% Define teachers
+teacher(mr_smith).
+teacher(ms_jones).
+teacher(mrs_clark).
+
+% Define subjects with their codes
+subject(math, s101).
+subject(science, s102).
+subject(english, s103).
+subject(history, s104).
+
+% Define which students take which subjects
+takes(john, s101).
+takes(john, s102).
+takes(mary, s103).
+takes(mary, s104).
+takes(alex, s101).
+takes(alex, s103).
+takes(sarah, s102).
+takes(sarah, s104).
+
+% Define which teachers teach which subjects
+teaches(mr_smith, s101).
+teaches(ms_jones, s102).
+teaches(mrs_clark, s103).
+teaches(mrs_clark, s104).
+
+% Rule to find which teacher teaches a given student for a particular subject
+teacher_of(Student, Teacher, SubjectCode) :-
+    takes(Student, SubjectCode),
+    teaches(Teacher, SubjectCode).
+
+% Examples of usage:
+% Query: teacher_of(john, Teacher, s101).
+% This will return: Teacher = mr_smith.
+
+% Query: teacher_of(mary, Teacher, s103).
+% This will return: Teacher = mrs_clark.

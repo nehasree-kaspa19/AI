@@ -1,0 +1,44 @@
+% Planets Database
+
+% Facts
+% planet(Name, Position from Sun, Type, Diameter in km, Number of moons)
+
+planet(mercury, 1, terrestrial, 4879, 0).
+planet(venus, 2, terrestrial, 12104, 0).
+planet(earth, 3, terrestrial, 12742, 1).
+planet(mars, 4, terrestrial, 6779, 2).
+planet(jupiter, 5, gas_giant, 139820, 79).
+planet(saturn, 6, gas_giant, 116460, 83).
+planet(uranus, 7, gas_giant, 50724, 27).
+planet(neptune, 8, gas_giant, 49244, 14).
+
+% Rules
+
+% Check if a planet is terrestrial
+is_terrestrial(Planet) :-
+    planet(Planet, _, terrestrial, _, _).
+
+% Check if a planet is a gas giant
+is_gas_giant(Planet) :-
+    planet(Planet, _, gas_giant, _, _).
+
+% Find planets with a certain number of moons
+planet_with_moons(Planet, MoonCount) :-
+    planet(Planet, _, _, _, MoonCount).
+
+% Find planets larger than a certain diameter
+larger_than_diameter(Planet, Diameter) :-
+    planet(Planet, _, _, PlanetDiameter, _),
+    PlanetDiameter > Diameter.
+
+% Get the position of a planet from the sun
+position_from_sun(Planet, Position) :-
+    planet(Planet, Position, _, _, _).
+
+% Sample Queries
+% ?- is_terrestrial(mars).
+% ?- is_gas_giant(jupiter).
+% ?- planet_with_moons(saturn, 83).
+% ?- larger_than_diameter(earth, 10000).
+% ?- position_from_sun(venus, Position).
+

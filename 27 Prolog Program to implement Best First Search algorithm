@@ -1,0 +1,50 @@
+% Define the graph as facts
+% edge(Start, End, Cost)
+edge(a, b, 1).
+edge(a, c, 3).
+edge(b, d, 3).
+edge(c, d, 1).
+edge(c, e, 5).
+edge(d, e, 2).
+edge(d, f, 4).
+edge(e, f, 1).
+
+% Define heuristic values for the nodes (these are just example values)
+% heuristic(Node, HeuristicCost)
+heuristic(a, 6).
+heuristic(b, 4).
+heuristic(c, 4).
+heuristic(d, 2).
+heuristic(e, 1).
+heuristic(f, 0).  % Goal node heuristic is 0
+
+% Priority queue operations
+insert_with_priority(Item, [], [Item]).
+insert_with_priority(Item, [H|T], [Item,H|T]) :- less_than(Item, H).
+insert_with_priority(Item, [H|T], [H|T2]) :- \+ less_than(Item, H), insert_with_priority(Item, T, T2).
+
+less_than([_, P1], [_, P2]) :- P1 =< P2.
+
+pop([H|T], H, T).
+
+% Best-First Search
+best_first_search(Start, Goal, Path) :-
+    heuristic(Start, H),
+    best_first_search([[Start, 0, H]], Goal, [], Path).
+
+best_first_search([[Goal, _, _]|_], Goal, Visited, Path) :-
+    reverse([Goal|Visited], Path).
+
+best_first_search([[Node, Cost, _]|Rest], Goal, Visited, Path) :-
+    findall([NextNode, NewCost, F],
+            (edge(Node, NextNode, StepCost),
+             \+ member(NextNode, Visited),
+             NewCost is Cost + StepCost,
+             heuristic(NextNode, H),
+             F is NewCost + H),
+            Children),
+    append(Rest, Children, NewQueue),
+    predsort(compare_priority, NewQueue, SortedQueue),
+    best_first_search(SortedQueue, Goal, [Node|Visited], Path).
+
+compare_priority

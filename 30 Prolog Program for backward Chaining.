@@ -1,0 +1,58 @@
+% Facts: defining symptoms for various diseases
+symptom(john, fever).
+symptom(john, cough).
+symptom(john, sore_throat).
+symptom(john, runny_nose).
+symptom(mary, sneezing).
+symptom(mary, runny_nose).
+symptom(mary, cough).
+symptom(alex, fever).
+symptom(alex, cough).
+symptom(alex, shortness_of_breath).
+symptom(alex, fatigue).
+symptom(alex, loss_of_taste).
+symptom(alex, loss_of_smell).
+symptom(lisa, sneezing).
+symptom(lisa, runny_nose).
+symptom(lisa, itchy_eyes).
+symptom(lisa, headache).
+
+% Rules: defining diseases based on symptoms
+disease(Patient, flu) :-
+    symptom(Patient, fever),
+    symptom(Patient, headache),
+    symptom(Patient, cough),
+    symptom(Patient, sore_throat),
+    symptom(Patient, runny_nose),
+    symptom(Patient, sneezing).
+
+disease(Patient, cold) :-
+    symptom(Patient, runny_nose),
+    symptom(Patient, sneezing),
+    symptom(Patient, cough),
+    symptom(Patient, sore_throat).
+
+disease(Patient, covid19) :-
+    symptom(Patient, fever),
+    symptom(Patient, cough),
+    symptom(Patient, shortness_of_breath),
+    symptom(Patient, fatigue),
+    symptom(Patient, loss_of_taste),
+    symptom(Patient, loss_of_smell).
+
+disease(Patient, allergy) :-
+    symptom(Patient, sneezing),
+    symptom(Patient, runny_nose),
+    symptom(Patient, itchy_eyes),
+    symptom(Patient, headache).
+
+% Backward chaining for diagnosing a patient
+diagnose(Patient, Disease) :-
+    disease(Patient, Disease).
+
+% Example queries
+% To diagnose a specific patient:
+% ?- diagnose(john, Disease).
+% ?- diagnose(mary, Disease).
+% ?- diagnose(alex, Disease).
+% ?- diagnose(lisa, Disease).

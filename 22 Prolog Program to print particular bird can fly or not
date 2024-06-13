@@ -1,0 +1,32 @@
+% Facts about birds and their ability to fly.
+bird(sparrow).
+bird(eagle).
+bird(penguin).
+bird(ostrich).
+
+% Facts about which birds can and cannot fly.
+can_fly(sparrow).
+can_fly(eagle).
+cannot_fly(penguin).
+cannot_fly(ostrich).
+
+% Rule to determine if a bird can fly.
+flies(X) :-
+    bird(X),
+    can_fly(X).
+
+% Rule to determine if a bird cannot fly.
+does_not_fly(X) :-
+    bird(X),
+    cannot_fly(X).
+
+% Queries to check if a particular bird can fly.
+can_the_bird_fly(Bird) :-
+    (flies(Bird) -> write(Bird), write(' can fly.');
+     does_not_fly(Bird) -> write(Bird), write(' cannot fly.');
+     write(Bird), write(' is not a known bird.')).
+
+% Example queries
+% ?- can_the_bird_fly(sparrow).
+% ?- can_the_bird_fly(penguin).
+% ?- can_the_bird_fly(owl).  % Example of a bird not in the knowledge base.

@@ -1,0 +1,45 @@
+% Facts defining the initial state
+% state(MonkeyPosition, MonkeyHasBanana, BoxPosition, MonkeyOnBox)
+% MonkeyPosition and BoxPosition can be: at_door, at_window, at_middle
+% MonkeyHasBanana can be: has_not, has
+% MonkeyOnBox can be: on_floor, on_box
+
+initial_state(state(at_door, has_not, at_window, on_floor)).
+
+% Move from one place to another
+move(state(at_door, Banana, Box, on_floor), move_to_window, state(at_window, Banana, Box, on_floor)).
+move(state(at_window, Banana, Box, on_floor), move_to_door, state(at_door, Banana, Box, on_floor)).
+move(state(Position, Banana, at_window, on_floor), move_box_to_middle, state(Position, Banana, at_middle, on_floor)).
+move(state(Position, Banana, at_middle, on_floor), move_box_to_window, state(Position, Banana, at_window, on_floor)).
+
+% Climb up or down the box
+move(state(Position, Banana, Box, on_floor), climb_box, state(Position, Banana, Box, on_box)).
+move(state(Position, Banana, Box, on_box), climb_down, state(Position, Banana, Box, on_floor)).
+
+% Grabbing the banana
+move(state(at_middle, has_not, at_middle, on_box), grab_banana, state(at_middle, has, at_middle, on_box)).
+
+% Define the goal state
+goal_state(state(_, has, _, _)).
+
+% Plan to achieve the goal state
+plan(State, [], State) :- goal_state(State).
+plan(State1, [Action | Actions], State3) :-
+    move(State1, Action, State2),
+    plan(State2, Actions, State3).
+
+% Find a plan from the initial state
+find_plan :-
+    initial_state(State),
+    plan(State, Plan, _),
+    write('Plan: '), nl,
+    write_plan(Plan).
+
+% Helper to write the plan
+write_plan([]).
+write_plan([Action | Actions]) :-
+    write(Action), nl,
+    write_plan(Actions).
+
+% Example query
+% ?- find_plan.

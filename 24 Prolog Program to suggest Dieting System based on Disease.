@@ -1,0 +1,19 @@
+% Facts: defining diet suggestions for different diseases
+diet(diabetes, 'Include high-fiber foods, whole grains, fruits, vegetables, and lean protein. Avoid sugary foods, refined carbs, and saturated fats.').
+diet(hypertension, 'Include fruits, vegetables, whole grains, low-fat dairy, and lean protein. Avoid salt, alcohol, and high-fat foods.').
+diet(heart_disease, 'Include fruits, vegetables, whole grains, lean protein, and omega-3 fatty acids. Avoid trans fats, saturated fats, and high-cholesterol foods.').
+diet(obesity, 'Include fruits, vegetables, whole grains, lean protein, and low-fat dairy. Control portion sizes and avoid high-calorie, high-fat, and sugary foods.').
+diet(celiac_disease, 'Follow a gluten-free diet, including gluten-free grains like rice and quinoa. Avoid wheat, barley, and rye.').
+
+% Rule: suggesting a diet based on disease
+suggest_diet(Disease) :-
+    diet(Disease, Suggestion),
+    write('For '), write(Disease), write(', it is recommended to: '), nl,
+    write(Suggestion), nl.
+
+% Example queries
+% ?- suggest_diet(diabetes).
+% ?- suggest_diet(hypertension).
+% ?- suggest_diet(heart_disease).
+% ?- suggest_diet(obesity).
+% ?- suggest_diet(celiac_disease).

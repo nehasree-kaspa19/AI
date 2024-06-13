@@ -1,0 +1,41 @@
+% Facts: defining symptoms for various diseases
+% disease(Disease, [Symptoms])
+disease(flu, [fever, headache, cough, sore_throat, runny_nose, sneezing]).
+disease(cold, [runny_nose, sneezing, cough, sore_throat]).
+disease(covid19, [fever, cough, shortness_of_breath, fatigue, loss_of_taste, loss_of_smell]).
+disease(allergy, [sneezing, runny_nose, itchy_eyes, headache]).
+disease(malaria, [fever, chills, sweating, headache, nausea, vomiting]).
+disease(pneumonia, [fever, cough, shortness_of_breath, chest_pain, fatigue]).
+
+% Rules: defining a diagnosis based on symptoms
+has_disease(Patient, Disease) :-
+    patient_symptoms(Patient, Symptoms),
+    disease(Disease, DiseaseSymptoms),
+    subset(DiseaseSymptoms, Symptoms).
+
+% Check if a list is a subset of another list
+subset([], _).
+subset([H|T], List) :-
+    member(H, List),
+    subset(T, List).
+
+% Example queries to set patient symptoms
+% patient_symptoms(Patient, [Symptoms])
+patient_symptoms(john, [fever, headache, cough, sore_throat, runny_nose, sneezing]).
+patient_symptoms(mary, [runny_nose, sneezing, cough, sore_throat]).
+patient_symptoms(alex, [fever, cough, shortness_of_breath, fatigue, loss_of_taste, loss_of_smell]).
+patient_symptoms(lisa, [sneezing, runny_nose, itchy_eyes, headache]).
+
+% Example queries
+% To diagnose a patient:
+% ?- has_disease(john, Disease).
+% Disease = flu.
+
+% ?- has_disease(mary, Disease).
+% Disease = cold.
+
+% ?- has_disease(alex, Disease).
+% Disease = covid19.
+
+% ?- has_disease(lisa, Disease).
+% Disease = allergy.

@@ -1,0 +1,40 @@
+% Facts: defining the color of various fruits
+fruit_color(apple, red).
+fruit_color(banana, yellow).
+fruit_color(grape, purple).
+fruit_color(orange, orange).
+fruit_color(lemon, yellow).
+fruit_color(cherry, red).
+fruit_color(blueberry, blue).
+fruit_color(kiwi, green).
+fruit_color(watermelon, green).
+
+% Rule: finding the color of a specific fruit
+fruit_color_of(Fruit, Color) :-
+    fruit_color(Fruit, Color).
+
+% Rule: finding fruits of a specific color
+fruits_of_color(Color, Fruit) :-
+    fruit_color(Fruit, Color).
+
+% Example queries
+% To find the color of a specific fruit:
+% ?- fruit_color_of(apple, Color).
+% Color = red.
+
+% To find fruits of a specific color:
+% ?- fruits_of_color(red, Fruit).
+% Fruit = apple ;
+% Fruit = cherry.
+
+% To backtrack and find all fruits of all colors:
+% ?- fruit_color(Fruit, Color).
+% Fruit = apple, Color = red ;
+% Fruit = banana, Color = yellow ;
+% Fruit = grape, Color = purple ;
+% Fruit = orange, Color = orange ;
+% Fruit = lemon, Color = yellow ;
+% Fruit = cherry, Color = red ;
+% Fruit = blueberry, Color = blue ;
+% Fruit = kiwi, Color = green ;
+% Fruit = watermelon, Color = green.

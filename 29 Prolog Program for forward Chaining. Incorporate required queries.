@@ -1,0 +1,36 @@
+% Define initial facts
+fact(raining).
+fact(wet_grass).
+fact(cloudy).
+
+% Define rules
+rule(wet_ground) :- fact(raining).
+rule(need_umbrella) :- fact(raining).
+rule(slippery_road) :- fact(wet_ground).
+rule(wet_ground) :- fact(wet_grass).
+rule(carry_jacket) :- fact(cloudy).
+
+% Forward chaining mechanism
+infer(NewFact) :-
+    rule(NewFact), 
+    \+ fact(NewFact), % If the fact is not already known
+    assert(fact(NewFact)), % Add the new fact
+    write('Inferred: '), write(NewFact), nl, 
+    fail.
+infer(_). % Always succeed
+
+% Infer all possible facts
+infer_all :-
+    infer(_),
+    \+ (rule(F), \+ fact(F)).
+
+% Example queries to list all facts
+list_facts :-
+    fact(F),
+    write(F), nl,
+    fail.
+list_facts.
+
+% Example query
+% ?- infer_all, list_facts.
+% It will infer all possible facts and list them.
